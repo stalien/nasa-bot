@@ -3,12 +3,18 @@ import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Properties;
 import java.util.Scanner;
 
 public class BotApplication {
     public static void main(String[] args) throws IOException {
-        var url = "https://api.nasa.gov/planetary/apod?api_key=***REMOVED***";
+
+        var localProperties = new Properties();
+        localProperties.load(new FileInputStream("src/main/resources/local.properties"));
+
+        var url = "https://api.nasa.gov/planetary/apod?api_key=" + localProperties.getProperty("API_KEY");
 
         CloseableHttpClient client = HttpClients.createDefault();
 
