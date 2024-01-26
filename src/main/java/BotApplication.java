@@ -13,12 +13,18 @@ import java.util.Scanner;
 public class BotApplication {
     public static void main(String[] args) throws IOException {
 
-        var localProperties = new Properties();
-        localProperties.load(new FileInputStream("src/main/resources/local.properties"));
+        Properties localProperties = new Properties();
+        try (FileInputStream fis = new FileInputStream("src/main/resources/local.properties")) {
+            localProperties.load(fis);
+        }
 
-        var url = "https://api.nasa.gov/planetary/apod?api_key=" +
-                localProperties.getProperty("API_KEY") +
-                "&date=2024-01-24";
+        String apiKey = localProperties.getProperty("API_KEY");
+        String url = String.format("https://api.nasa.gov/planetary/apod?api_key=%s&date=%s",
+                apiKey,
+                "2024-01-26"
+        );
+
+//        System.out.println(url);
 
         CloseableHttpClient client = HttpClients.createDefault();
 
